@@ -340,22 +340,46 @@
     <nav>
         <div class="nav-container">
             <a href="#" class="logo" onclick="showPage('home', event)">
-                <!-- Anvil with Flame Logo -->
+                <!-- Modern Anvil Logo -->
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Flame behind anvil -->
-                    <path d="M50 25 C45 35, 40 40, 42 50 C44 45, 46 42, 50 40 C54 42, 56 45, 58 50 C60 40, 55 35, 50 25" 
-                          fill="#ff6b35" opacity="0.8"/>
-                    <path d="M45 35 C43 40, 41 43, 42 48 C43 45, 44 43, 45 42 C46 43, 47 45, 48 48 C49 43, 47 40, 45 35" 
-                          fill="#ffaa00" opacity="0.6"/>
-                    
-                    <!-- Anvil -->
-                    <path d="M20 70 L80 70 L85 80 L15 80 Z" fill="#333"/>
-                    <path d="M30 50 L70 50 L75 70 L25 70 Z" fill="#444"/>
-                    <path d="M35 40 L65 40 L70 50 L30 50 Z" fill="#555"/>
-                    
-                    <!-- Anvil horn -->
-                    <path d="M15 70 L25 70 L25 75 L10 75 Z" fill="#333"/>
-                    <path d="M75 70 L85 70 L90 75 L75 75 Z" fill="#333"/>
+                    <defs>
+                        <linearGradient id="anvilGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#666;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#444;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#222;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="flameGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#ff8c42;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ffaa00;stop-opacity:0.8" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Flame element behind anvil -->
+                    <path d="M50 20 C48 25, 46 28, 45 32 C46 30, 48 28, 50 27 C52 28, 54 30, 55 32 C54 28, 52 25, 50 20"
+                          fill="url(#flameGradient)" opacity="0.9"/>
+                    <path d="M50 25 C47 32, 44 38, 43 45 C45 40, 47 37, 50 35 C53 37, 55 40, 57 45 C56 38, 53 32, 50 25"
+                          fill="url(#flameGradient)" opacity="0.8"/>
+
+                    <!-- Main anvil body with gradient -->
+                    <!-- Base -->
+                    <path d="M25 75 L75 75 L78 82 L22 82 Z" fill="url(#anvilGradient)"/>
+
+                    <!-- Middle section -->
+                    <path d="M30 58 L70 58 L73 75 L27 75 Z" fill="url(#anvilGradient)"/>
+
+                    <!-- Top working surface -->
+                    <path d="M35 50 L65 50 L68 58 L32 58 Z" fill="url(#anvilGradient)"/>
+
+                    <!-- Horn (right side) -->
+                    <path d="M70 50 L85 48 L88 55 L73 58 Z" fill="url(#anvilGradient)"/>
+
+                    <!-- Hardy hole highlight -->
+                    <ellipse cx="50" cy="54" rx="3" ry="4" fill="#111"/>
+
+                    <!-- Highlights for 3D effect -->
+                    <path d="M35 50 L65 50 L66 52 L36 52 Z" fill="#888" opacity="0.6"/>
+                    <path d="M30 58 L70 58 L71 60 L31 60 Z" fill="#888" opacity="0.4"/>
                 </svg>
                 <h1>NucMedForge</h1>
             </a>
@@ -381,13 +405,17 @@
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Start Learning Today</h3>
                 <p style="color: var(--text-muted); margin-bottom: 2rem;">Explore our comprehensive collection of nuclear medicine cases</p>
                 <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn category-btn" onclick="showPage('courses', event)" style="min-width: 200px; font-size: 1.2rem;">
+                    <button class="btn category-btn" onclick="showPage('courses', event)" style="min-width: 180px; font-size: 1.2rem; padding: 1.5rem 2rem;">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
-                        General Nuclear Medicine
+                        General
                     </button>
-                    <button class="btn category-btn" onclick="showPage('petct-courses', event)" style="min-width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, var(--accent-orange) 0%, #cc5529 100%);">
+                    <button class="btn category-btn" onclick="showPage('petct-courses', event)" style="min-width: 180px; font-size: 1.2rem; padding: 1.5rem 2rem; background: linear-gradient(135deg, var(--accent-orange) 0%, #cc5529 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
                         PET/CT
+                    </button>
+                    <button class="btn category-btn" onclick="showPage('cardiac-courses', event)" style="min-width: 180px; font-size: 1.2rem; padding: 1.5rem 2rem; background: linear-gradient(135deg, #DC143C 0%, #A0122A 100%);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">❤️</div>
+                        Cardiac
                     </button>
                 </div>
             </div>
@@ -527,6 +555,49 @@
             </div>
         </div>
 
+        <!-- Cardiac Courses Page -->
+        <div id="cardiac-courses" class="page-section">
+            <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">Cardiac Nuclear Medicine Courses</h2>
+
+            <div class="course-grid" id="cardiac-course-grid">
+                <div class="course-card" onclick="showCardiacCases('mpsspect')">
+                    <h3>Myocardial Perfusion SPECT</h3>
+                    <p>SPECT imaging for coronary artery disease evaluation</p>
+                    <span class="case-count">6 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCardiacCases('mpspet')">
+                    <h3>Myocardial Perfusion PET/CT</h3>
+                    <p>PET/CT imaging for myocardial perfusion assessment</p>
+                    <span class="case-count">5 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCardiacCases('viability')">
+                    <h3>Myocardial Viability FDG PET/CT</h3>
+                    <p>FDG PET imaging for assessment of viable myocardium</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCardiacCases('pyp')">
+                    <h3>Amyloidosis PYP Scan</h3>
+                    <p>PYP scintigraphy for cardiac amyloidosis evaluation</p>
+                    <span class="case-count">5 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCardiacCases('muga')">
+                    <h3>MUGA Scan</h3>
+                    <p>Multigated acquisition scan for cardiac function assessment</p>
+                    <span class="case-count">5 Cases Available</span>
+                </div>
+            </div>
+
+            <div id="cardiac-case-viewer" class="case-viewer" style="display: none;">
+                <a href="#" class="back-button" onclick="hideCardiacCases()">← Back to Cardiac Courses</a>
+                <h3 id="cardiac-case-title" style="color: var(--primary-green); margin-bottom: 1rem;"></h3>
+                <div id="cardiac-case-list"></div>
+            </div>
+        </div>
+
         <!-- Resources Page -->
         <div id="resources" class="page-section">
             <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">Resources</h2>
@@ -657,6 +728,10 @@
                 document.getElementById('petct-case-viewer').style.display = 'none';
                 document.getElementById('petct-course-grid').style.display = 'grid';
             }
+            if (pageName !== 'cardiac-courses') {
+                document.getElementById('cardiac-case-viewer').style.display = 'none';
+                document.getElementById('cardiac-course-grid').style.display = 'grid';
+            }
         }
 
         // Hide cases and show course grid
@@ -669,6 +744,12 @@
         function hidePETCases() {
             document.getElementById('petct-case-viewer').style.display = 'none';
             document.getElementById('petct-course-grid').style.display = 'grid';
+        }
+
+        // Hide Cardiac cases and show course grid
+        function hideCardiacCases() {
+            document.getElementById('cardiac-case-viewer').style.display = 'none';
+            document.getElementById('cardiac-course-grid').style.display = 'grid';
         }
 
         // Show Cases for Selected Category
@@ -886,6 +967,88 @@
             // Create case links
             caseList.innerHTML = '';
             petctCases[category].cases.forEach(caseItem => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'case-link';
+                link.textContent = caseItem.name;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    openCaseViewer(caseItem.url, caseItem.name);
+                };
+                caseList.appendChild(link);
+            });
+        }
+
+        // Show Cardiac Cases for Selected Category
+        function showCardiacCases(category) {
+            const caseViewer = document.getElementById('cardiac-case-viewer');
+            const caseTitle = document.getElementById('cardiac-case-title');
+            const caseList = document.getElementById('cardiac-case-list');
+            const courseGrid = document.getElementById('cardiac-course-grid');
+
+            // Cardiac case data with placeholder PACSmini URLs
+            const cardiacCases = {
+                mpsspect: {
+                    title: 'Myocardial Perfusion SPECT Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Myocardial Perfusion', url: 'https://www.pacsbin.com/c/mpsspect1' },
+                        { name: 'Case 2: Anterior Wall Ischemia', url: 'https://www.pacsbin.com/c/mpsspect2' },
+                        { name: 'Case 3: Inferior Wall Infarction', url: 'https://www.pacsbin.com/c/mpsspect3' },
+                        { name: 'Case 4: Multi-vessel Disease', url: 'https://www.pacsbin.com/c/mpsspect4' },
+                        { name: 'Case 5: Balanced Ischemia', url: 'https://www.pacsbin.com/c/mpsspect5' },
+                        { name: 'Case 6: Artifact vs Disease', url: 'https://www.pacsbin.com/c/mpsspect6' }
+                    ]
+                },
+                mpspet: {
+                    title: 'Myocardial Perfusion PET/CT Cases',
+                    cases: [
+                        { name: 'Case 1: Normal PET Perfusion', url: 'https://www.pacsbin.com/c/mpspet1' },
+                        { name: 'Case 2: LAD Ischemia', url: 'https://www.pacsbin.com/c/mpspet2' },
+                        { name: 'Case 3: RCA Infarction', url: 'https://www.pacsbin.com/c/mpspet3' },
+                        { name: 'Case 4: LCx Territory Defect', url: 'https://www.pacsbin.com/c/mpspet4' },
+                        { name: 'Case 5: Flow Reserve Assessment', url: 'https://www.pacsbin.com/c/mpspet5' }
+                    ]
+                },
+                viability: {
+                    title: 'Myocardial Viability FDG PET/CT Cases',
+                    cases: [
+                        { name: 'Case 1: Hibernating Myocardium', url: 'https://www.pacsbin.com/c/viability1' },
+                        { name: 'Case 2: Viable vs Scar Tissue', url: 'https://www.pacsbin.com/c/viability2' },
+                        { name: 'Case 3: Post-Infarct Viability', url: 'https://www.pacsbin.com/c/viability3' },
+                        { name: 'Case 4: Pre-Revascularization Assessment', url: 'https://www.pacsbin.com/c/viability4' }
+                    ]
+                },
+                pyp: {
+                    title: 'Amyloidosis PYP Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Negative PYP Scan', url: 'https://www.pacsbin.com/c/pyp1' },
+                        { name: 'Case 2: Positive ATTR Amyloidosis', url: 'https://www.pacsbin.com/c/pyp2' },
+                        { name: 'Case 3: Moderate Cardiac Uptake', url: 'https://www.pacsbin.com/c/pyp3' },
+                        { name: 'Case 4: Severe Amyloid Burden', url: 'https://www.pacsbin.com/c/pyp4' },
+                        { name: 'Case 5: Follow-up Study', url: 'https://www.pacsbin.com/c/pyp5' }
+                    ]
+                },
+                muga: {
+                    title: 'MUGA Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Normal LVEF', url: 'https://www.pacsbin.com/c/muga1' },
+                        { name: 'Case 2: Reduced Ejection Fraction', url: 'https://www.pacsbin.com/c/muga2' },
+                        { name: 'Case 3: Regional Wall Motion Abnormality', url: 'https://www.pacsbin.com/c/muga3' },
+                        { name: 'Case 4: Chemotherapy Monitoring', url: 'https://www.pacsbin.com/c/muga4' },
+                        { name: 'Case 5: Pre-Transplant Evaluation', url: 'https://www.pacsbin.com/c/muga5' }
+                    ]
+                }
+            };
+
+            // Hide course grid and show case viewer
+            courseGrid.style.display = 'none';
+            caseViewer.style.display = 'block';
+
+            caseTitle.textContent = cardiacCases[category].title;
+
+            // Create case links
+            caseList.innerHTML = '';
+            cardiacCases[category].cases.forEach(caseItem => {
                 const link = document.createElement('a');
                 link.href = '#';
                 link.className = 'case-link';
