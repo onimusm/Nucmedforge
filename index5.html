@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NucMedForge - Nuclear Medicine Education</title>
+    <style>
+        :root {
+            --primary-dark: #0a0a0a;
+            --secondary-dark: #1a1a1a;
+            --tertiary-dark: #2a2a2a;
+            --primary-green: #228B22;
+            --secondary-green: #1F5F1F;
+            --accent-orange: #ff6b35;
+            --text-light: #ffffff;
+            --text-muted: #b0b0b0;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--secondary-dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+
+        .logo svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-green);
+            background-color: rgba(34, 139, 34, 0.1);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, rgba(34, 139, 34, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%);
+            border-radius: 10px;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Page Sections */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Course Categories */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background-color: var(--secondary-dark);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .course-card:hover {
+            border-color: var(--primary-green);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(34, 139, 34, 0.2);
+        }
+
+        .course-card h3 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .course-card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .case-count {
+            color: var(--accent-orange);
+            font-weight: bold;
+        }
+
+        /* Case Viewer */
+        .case-viewer {
+            background-color: var(--secondary-dark);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .case-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            margin: 0.5rem;
+            background-color: var(--tertiary-dark);
+            border-radius: 5px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .case-link:hover {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+            background-color: var(--tertiary-dark);
+            border-radius: 5px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .back-button:hover {
+            background-color: var(--accent-orange);
+            border-color: var(--accent-orange);
+        }
+
+        /* Resources Page */
+        .resource-section {
+            background-color: var(--secondary-dark);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .resource-section h3 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .resource-list {
+            list-style: none;
+        }
+
+        .resource-list li {
+            padding: 0.5rem 0;
+        }
+
+        .resource-list a {
+            color: var(--accent-orange);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .resource-list a:hover {
+            color: var(--primary-green);
+            text-decoration: underline;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-green);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-light);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(34, 139, 34, 0.4);
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .about-content h3 {
+            color: var(--primary-green);
+            margin: 2rem 0 1rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showPage('home', event)">
+                <!-- Anvil with Flame Logo -->
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Flame behind anvil -->
+                    <path d="M50 25 C45 35, 40 40, 42 50 C44 45, 46 42, 50 40 C54 42, 56 45, 58 50 C60 40, 55 35, 50 25" 
+                          fill="#ff6b35" opacity="0.8"/>
+                    <path d="M45 35 C43 40, 41 43, 42 48 C43 45, 44 43, 45 42 C46 43, 47 45, 48 48 C49 43, 47 40, 45 35" 
+                          fill="#ffaa00" opacity="0.6"/>
+                    
+                    <!-- Anvil -->
+                    <path d="M20 70 L80 70 L85 80 L15 80 Z" fill="#333"/>
+                    <path d="M30 50 L70 50 L75 70 L25 70 Z" fill="#444"/>
+                    <path d="M35 40 L65 40 L70 50 L30 50 Z" fill="#555"/>
+                    
+                    <!-- Anvil horn -->
+                    <path d="M15 70 L25 70 L25 75 L10 75 Z" fill="#333"/>
+                    <path d="M75 70 L85 70 L90 75 L75 75 Z" fill="#333"/>
+                </svg>
+                <h1>NucMedForge</h1>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home', event)" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#" onclick="showPage('courses', event)" class="nav-link" data-page="courses">Courses</a></li>
+                <li><a href="#" onclick="showPage('resources', event)" class="nav-link" data-page="resources">Resources</a></li>
+                <li><a href="#" onclick="showPage('about', event)" class="nav-link" data-page="about">About</a></li>
+                <li><a href="#" onclick="showPage('contact', event)" class="nav-link" data-page="contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home" class="page-section active">
+            <div class="hero">
+                <h2>Welcome to NucMedForge</h2>
+                <p>Forging excellence in nuclear medicine education through interactive case-based learning</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Start Learning Today</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Explore our comprehensive collection of nuclear medicine cases</p>
+                <button class="btn" onclick="showPage('courses', event)">Browse Courses</button>
+            </div>
+        </div>
+
+        <!-- Courses Page -->
+        <div id="courses" class="page-section">
+            <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">General Nuclear Medicine Courses</h2>
+            
+            <div class="course-grid" id="course-grid">
+                <div class="course-card" onclick="showCases('vq')">
+                    <h3>V/Q Scan</h3>
+                    <p>Ventilation-Perfusion Scintigraphy for pulmonary embolism evaluation</p>
+                    <span class="case-count">5 Cases Available</span>
+                </div>
+                
+                <div class="course-card" onclick="showCases('hida')">
+                    <h3>HIDA Scan</h3>
+                    <p>Hepatobiliary Iminodiacetic Acid scan for biliary system evaluation</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+                
+                <div class="course-card" onclick="showCases('bone')">
+                    <h3>Bone Scan</h3>
+                    <p>Skeletal scintigraphy for metastases and bone pathology</p>
+                    <span class="case-count">6 Cases Available</span>
+                </div>
+                
+                <div class="course-card" onclick="showCases('thyroid')">
+                    <h3>Thyroid Scan</h3>
+                    <p>Thyroid uptake and imaging for thyroid disorders</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+                
+                <div class="course-card" onclick="showCases('renal')">
+                    <h3>Renal Scan</h3>
+                    <p >Renal scintigraphy for kidney function assessment</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+                
+                <div class="course-card" onclick="showCases('gastric')">
+                    <h3>Gastric Emptying</h3>
+                    <p>Evaluation of gastric motility disorders</p>
+                    <span class="case-count">3 Cases Available</span>
+                </div>
+                
+                <div class="course-card" onclick="showCases('brain')">
+                    <h3>Brain SPECT</h3>
+                    <p>Brain perfusion imaging for neurological disorders</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCases('csf')">
+                    <h3>CSF Imaging</h3>
+                    <p>Cerebrospinal fluid flow studies and leak detection</p>
+                    <span class="case-count">3 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCases('parathyroid')">
+                    <h3>Parathyroid Scan</h3>
+                    <p>Sestamibi imaging for parathyroid adenoma localization</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCases('gibleed')">
+                    <h3>GI Bleed Scan</h3>
+                    <p>Tagged RBC study for gastrointestinal bleeding localization</p>
+                    <span class="case-count">3 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCases('meckel')">
+                    <h3>Meckel's Scan</h3>
+                    <p>Pertechnetate imaging for Meckel's diverticulum</p>
+                    <span class="case-count">3 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCases('liverspleen')">
+                    <h3>Liver-Spleen Scan</h3>
+                    <p>Sulfur colloid imaging for hepatic and splenic evaluation</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showCases('wbc')">
+                    <h3>WBC Scan</h3>
+                    <p>Labeled white blood cell imaging for infection/inflammation</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+            </div>
+            
+            <div id="case-viewer" class="case-viewer" style="display: none;">
+                <a href="#" class="back-button" onclick="hideCases()">← Back to Courses</a>
+                <h3 id="case-title" style="color: var(--primary-green); margin-bottom: 1rem;"></h3>
+                <div id="case-list"></div>
+            </div>
+        </div>
+
+        <!-- Resources Page -->
+        <div id="resources" class="page-section">
+            <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">Resources</h2>
+            
+            <div class="resource-section">
+                <h3>Guidelines & Protocols</h3>
+                <ul class="resource-list">
+                    <li><a href="https://www.snmmi.org/ClinicalPractice/content.aspx?ItemNumber=6414" target="_blank">SNMMI Practice Guidelines</a></li>
+                    <li><a href="https://www.acr.org/Clinical-Resources/ACR-Appropriateness-Criteria" target="_blank">ACR Appropriateness Criteria</a></li>
+                    <li><a href="https://www.eanm.org/publications/guidelines/" target="_blank">EANM Procedure Guidelines</a></li>
+                    <li><a href="#">Radiation Safety Protocols</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-section">
+                <h3>Educational Materials</h3>
+                <ul class="resource-list">
+                    <li><a href="#">Nuclear Medicine Physics Basics</a></li>
+                    <li><a href="#">Radiopharmaceutical Reference Guide</a></li>
+                    <li><a href="#">Image Interpretation Tutorials</a></li>
+                    <li><a href="#">Case-Based Learning Modules</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-section">
+                <h3>Professional Organizations</h3>
+                <ul class="resource-list">
+                    <li><a href="https://www.snmmi.org/" target="_blank">Society of Nuclear Medicine and Molecular Imaging (SNMMI)</a></li>
+                    <li><a href="https://www.acnmonline.org/" target="_blank">American College of Nuclear Medicine (ACNM)</a></li>
+                    <li><a href="https://www.eanm.org/" target="_blank">European Association of Nuclear Medicine (EANM)</a></li>
+                    <li><a href="https://www.wfnmb.org/" target="_blank">World Federation of Nuclear Medicine and Biology (WFNMB)</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-section">
+                <h3>Journals & Publications</h3>
+                <ul class="resource-list">
+                    <li><a href="https://jnm.snmjournals.org/" target="_blank">Journal of Nuclear Medicine</a></li>
+                    <li><a href="https://journals.lww.com/nuclearmed/pages/default.aspx" target="_blank">Clinical Nuclear Medicine</a></li>
+                    <li><a href="https://www.springer.com/journal/259" target="_blank">European Journal of Nuclear Medicine</a></li>
+                    <li><a href="https://www.seminarsinnuclearmedicine.com/" target="_blank">Seminars in Nuclear Medicine</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page-section">
+            <div class="about-content">
+                <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">About NucMedForge</h2>
+                
+                <h3>Our Mission</h3>
+                <p>NucMedForge is dedicated to providing high-quality nuclear medicine education through interactive case-based learning. We believe that hands-on experience with real cases is the most effective way to master the art and science of nuclear medicine.</p>
+                
+                <h3>What We Offer</h3>
+                <p>Our platform features a comprehensive collection of nuclear medicine cases embedded from PACSmini, covering all major imaging modalities including V/Q scans, HIDA scans, bone scans, and more. Each case is carefully selected to demonstrate key learning points and common clinical scenarios.</p>
+                
+                <h3>Our Approach</h3>
+                <p>Just as a blacksmith forges metal into useful tools, we help forge nuclear medicine professionals through practical, case-based education. Our modern interface provides an optimal learning environment with carefully chosen colors that reduce eye strain during extended study sessions.</p>
+                
+                <h3>Who We Serve</h3>
+                <p>Whether you're a resident, fellow, technologist, or practicing physician, NucMedForge provides valuable resources to enhance your nuclear medicine knowledge and skills.</p>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page-section">
+            <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">Contact Us</h2>
+            
+            <form class="contact-form" action="mailto:Nucmedforge@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 2rem; color: var(--text-muted);">
+                You can also reach us directly at: <a href="mailto:Nucmedforge@gmail.com" style="color: var(--accent-orange);">Nucmedforge@gmail.com</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showPage(pageName, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageName).classList.add('active');
+            
+            // Update nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageName) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Hide case viewer when navigating away from courses
+            if (pageName !== 'courses') {
+                document.getElementById('case-viewer').style.display = 'none';
+                document.getElementById('course-grid').style.display = 'grid';
+            }
+        }
+
+        // Hide cases and show course grid
+        function hideCases() {
+            document.getElementById('case-viewer').style.display = 'none';
+            document.getElementById('course-grid').style.display = 'grid';
+        }
+
+        // Show Cases for Selected Category
+        function showCases(category) {
+            const caseViewer = document.getElementById('case-viewer');
+            const caseTitle = document.getElementById('case-title');
+            const caseList = document.getElementById('case-list');
+            const courseGrid = document.getElementById('course-grid');
+            
+            // Sample case data - replace with actual PACSmini URLs
+            const cases = {
+                vq: {
+                    title: 'V/Q Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Normal V/Q Scan', url: 'https://www.pacsbin.com/c/1JNqVJRyaH' },
+                        { name: 'Case 2: High Probability PE', url: 'https://www.pacsbin.com/c/example2' },
+                        { name: 'Case 3: Intermediate Probability', url: 'https://www.pacsbin.com/c/example3' },
+                        { name: 'Case 4: Low Probability', url: 'https://www.pacsbin.com/c/example4' },
+                        { name: 'Case 5: Matched Defects', url: 'https://www.pacsbin.com/c/example5' }
+                    ]
+                },
+                hida: {
+                    title: 'HIDA Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Normal HIDA', url: 'https://www.pacsbin.com/c/example6' },
+                        { name: 'Case 2: Acute Cholecystitis', url: 'https://www.pacsbin.com/c/example7' },
+                        { name: 'Case 3: Chronic Cholecystitis', url: 'https://www.pacsbin.com/c/example8' },
+                        { name: 'Case 4: Biliary Atresia', url: 'https://www.pacsbin.com/c/example9' }
+                    ]
+                },
+                bone: {
+                    title: 'Bone Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Bone Scan', url: 'https://www.pacsbin.com/c/example10' },
+                        { name: 'Case 2: Metastatic Disease', url: 'https://www.pacsbin.com/c/example11' },
+                        { name: 'Case 3: Osteomyelitis', url: 'https://www.pacsbin.com/c/example12' },
+                        { name: 'Case 4: Stress Fracture', url: 'https://www.pacsbin.com/c/example13' },
+                        { name: 'Case 5: Paget\'s Disease', url: 'https://www.pacsbin.com/c/example14' },
+                        { name: 'Case 6: Prosthetic Loosening', url: 'https://www.pacsbin.com/c/example15' }
+                    ]
+                },
+                thyroid: {
+                    title: 'Thyroid Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Thyroid', url: 'https://www.pacsbin.com/c/example16' },
+                        { name: 'Case 2: Graves\' Disease', url: 'https://www.pacsbin.com/c/example17' },
+                        { name: 'Case 3: Toxic Nodule', url: 'https://www.pacsbin.com/c/example18' },
+                        { name: 'Case 4: Thyroiditis', url: 'https://www.pacsbin.com/c/example19' }
+                    ]
+                },
+                renal: {
+                    title: 'Renal Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Renal Function', url: 'https://www.pacsbin.com/c/example25' },
+                        { name: 'Case 2: Renal Artery Stenosis', url: 'https://www.pacsbin.com/c/example26' },
+                        { name: 'Case 3: Obstructive Uropathy', url: 'https://www.pacsbin.com/c/example27' },
+                        { name: 'Case 4: Transplant Evaluation', url: 'https://www.pacsbin.com/c/example28' }
+                    ]
+                },
+                gastric: {
+                    title: 'Gastric Emptying Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Emptying', url: 'https://www.pacsbin.com/c/example29' },
+                        { name: 'Case 2: Gastroparesis', url: 'https://www.pacsbin.com/c/example30' },
+                        { name: 'Case 3: Rapid Emptying', url: 'https://www.pacsbin.com/c/example31' }
+                    ]
+                },
+                brain: {
+                    title: 'Brain SPECT Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Brain Perfusion', url: 'https://www.pacsbin.com/c/example32' },
+                        { name: 'Case 2: Alzheimer\'s Disease', url: 'https://www.pacsbin.com/c/example33' },
+                        { name: 'Case 3: Seizure Focus', url: 'https://www.pacsbin.com/ c/example34' },
+                        { name: 'Case 4: Stroke', url: 'https://www.pacsbin.com/c/example35' }
+                    ]
+                },
+                csf: {
+                    title: 'CSF Imaging Cases',
+                    cases: [
+                        { name: 'Case 1: Normal CSF Flow', url: 'https://www.pacsbin.com/c/example36' },
+                        { name: 'Case 2: CSF Leak - Rhinorrhea', url: 'https://www.pacsbin.com/c/example37' },
+                        { name: 'Case 3: Normal Pressure Hydrocephalus', url: 'https://www.pacsbin.com/c/example38' }
+                    ]
+                },
+                parathyroid: {
+                    title: 'Parathyroid Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Single Adenoma', url: 'https://www.pacsbin.com/c/example39' },
+                        { name: 'Case 2: Double Adenoma', url: 'https://www.pacsbin.com/c/example40' },
+                        { name: 'Case 3: Ectopic Parathyroid', url: 'https://www.pacsbin.com/c/example41' },
+                        { name: 'Case 4: Parathyroid Hyperplasia', url: 'https://www.pacsbin.com/c/example42' }
+                    ]
+                },
+                gibleed: {
+                    title: 'GI Bleed Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Active Small Bowel Bleed', url: 'https://www.pacsbin.com/c/example43' },
+                        { name: 'Case 2: Colonic Bleeding', url: 'https://www.pacsbin.com/c/example44' },
+                        { name: 'Case 3: Negative Study', url: 'https://www.pacsbin.com/c/example45' }
+                    ]
+                },
+                meckel: {
+                    title: 'Meckel\'s Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Positive Meckel\'s', url: 'https://www.pacsbin.com/c/example46' },
+                        { name: 'Case 2: False Positive - Duplication Cyst', url: 'https://www.pacsbin.com/c/example47' },
+                        { name: 'Case 3: Negative Study', url: 'https://www.pacsbin.com/c/example48' }
+                    ]
+                },
+                liverspleen: {
+                    title: 'Liver-Spleen Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Study', url: 'https://www.pacsbin.com/c/example49' },
+                        { name: 'Case 2: Cirrhosis with Splenomegaly', url: 'https://www.pacsbin.com/c/example50' },
+                        { name: 'Case 3: Focal Nodular Hyperplasia', url: 'https://www.pacsbin.com/c/example51' },
+                        { name: 'Case 4: Splenic Infarct', url: 'https://www.pacsbin.com/c/example52' }
+                    ]
+                },
+                wbc: {
+                    title: 'WBC Scan Cases',
+                    cases: [
+                        { name: 'Case 1: Osteomyelitis', url: 'https://www.pacsbin.com/c/example53' },
+                        { name: 'Case 2: Abdominal Abscess', url: 'https://www.pacsbin.com/c/example54' },
+                        { name: 'Case 3: Prosthetic Joint Infection', url: 'https://www.pacsbin.com/c/example55' },
+                        { name: 'Case 4: Inflammatory Bowel Disease', url: 'https://www.pacsbin.com/c/example56' }
+                    ]
+                }
+            };
+            
+            // Hide course grid and show case viewer
+            courseGrid.style.display = 'none';
+            caseViewer.style.display = 'block';
+            
+            caseTitle.textContent = cases[category].title;
+            
+            // Create case links
+            caseList.innerHTML = '';
+            cases[category].cases.forEach(caseItem => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'case-link';
+                link.textContent = caseItem.name;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    openCaseViewer(caseItem.url, caseItem.name);
+                };
+                caseList.appendChild(link);
+            });
+        }
+
+        // Open Case Viewer in New Tab
+        function openCaseViewer(url, caseName) {
+            // Create HTML content for the new tab
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${caseName} - NucMedForge</title>
+                    <style>
+                        body {
+                            margin: 0;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                            background-color: #0a0a0a;
+                            color: #ffffff;
+                        }
+                        .viewer-container {
+                            display: grid;
+                            grid-template-columns: 1fr 350px;
+                            grid-template-rows: 1fr auto;
+                            height: 100vh;
+                            gap: 10px;
+                            padding: 10px;
+                        }
+                        .case-iframe {
+                            grid-column: 1;
+                            grid-row: 1;
+                            background-color: #1a1a1a;
+                            border-radius: 5px;
+                            overflow: hidden;
+                        }
+                        .case-iframe iframe {
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                        }
+                        .sidebar {
+                            grid-column: 2;
+                            grid-row: 1 / 3;
+                            background-color: #1a1a1a;
+                            border-radius: 5px;
+                            padding: 20px;
+                            overflow-y: auto;
+                        }
+                        .teaching-points {
+                            grid-column: 1;
+                            grid-row: 2;
+                            background-color: #1a1a1a;
+                            border-radius: 5px;
+                            padding: 20px;
+                            min-height: 200px;
+                        }
+                        h2 {
+                            color: #228B22;
+                            margin-top: 0;
+                        }
+                        h3 {
+                            color: #ff6b35;
+                            margin-top: 20px;
+                        }
+                        .editable {
+                            background-color: #2a2a2a;
+                            border: 1px solid #333;
+                            border-radius: 5px;
+                            padding: 10px;
+                            color: #fff;
+                            min-height: 100px;
+                            white-space: pre-wrap;
+                        }
+                        .editable:focus {
+                            outline: none;
+                            border-color: #228B22;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="viewer-container">
+                        <div class="case-iframe">
+                            <iframe src="${url}"></iframe>
+                        </div>
+                        <div class="sidebar">
+                            <h2>Case Information</h2>
+                            <h3>Clinical History</h3>
+                            <div contenteditable="true" class="editable">Enter clinical history here...</div>
+                            
+                            <h3>Findings</h3>
+                            <div contenteditable="true" class="editable">Enter findings here...</div>
+                            
+                            <h3>Diagnosis</h3>
+                            <div contenteditable="true" class="editable">Enter diagnosis here...</div>
+                        </div>
+                        <div class="teaching-points">
+                            <h2>Teaching Points</h2>
+                            <div contenteditable="true" class="editable">Enter teaching points here...</div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            // Open in new tab
+            const newTab = window.open('', '_blank');
+            newTab.document.write(htmlContent);
+            newTab.document.close();
+        }
+
+        // Handle Contact Form
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
