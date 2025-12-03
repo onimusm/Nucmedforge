@@ -9,8 +9,8 @@
             --primary-dark: #0a0a0a;
             --secondary-dark: #1a1a1a;
             --tertiary-dark: #2a2a2a;
-            --primary-green: #228B22;
-            --secondary-green: #1F5F1F;
+            --primary-green: #1B6B1B;
+            --secondary-green: #155015;
             --accent-orange: #ff6b35;
             --text-light: #ffffff;
             --text-muted: #b0b0b0;
@@ -380,11 +380,20 @@
             <div style="text-align: center; margin-top: 3rem;">
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Start Learning Today</h3>
                 <p style="color: var(--text-muted); margin-bottom: 2rem;">Explore our comprehensive collection of nuclear medicine cases</p>
-                <button class="btn" onclick="showPage('courses', event)">Browse Courses</button>
+                <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn category-btn" onclick="showPage('courses', event)" style="min-width: 200px; font-size: 1.2rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
+                        General Nuclear Medicine
+                    </button>
+                    <button class="btn category-btn" onclick="showPage('petct-courses', event)" style="min-width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, var(--accent-orange) 0%, #cc5529 100%);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
+                        PET/CT
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Courses Page -->
+        <!-- General Nuclear Medicine Courses Page -->
         <div id="courses" class="page-section">
             <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">General Nuclear Medicine Courses</h2>
             
@@ -472,6 +481,49 @@
                 <a href="#" class="back-button" onclick="hideCases()">← Back to Courses</a>
                 <h3 id="case-title" style="color: var(--primary-green); margin-bottom: 1rem;"></h3>
                 <div id="case-list"></div>
+            </div>
+        </div>
+
+        <!-- PET/CT Courses Page -->
+        <div id="petct-courses" class="page-section">
+            <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">PET/CT Courses</h2>
+
+            <div class="course-grid" id="petct-course-grid">
+                <div class="course-card" onclick="showPETCases('fdgpet')">
+                    <h3>FDG PET/CT</h3>
+                    <p>F-18 FDG PET/CT for oncologic imaging and evaluation</p>
+                    <span class="case-count">5 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showPETCases('psma')">
+                    <h3>PSMA PET/CT</h3>
+                    <p>Prostate-specific membrane antigen imaging for prostate cancer</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showPETCases('dotate')">
+                    <h3>DOTATE PET/CT</h3>
+                    <p>Ga-68 DOTATATE imaging for neuroendocrine tumors</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showPETCases('fdgbrain')">
+                    <h3>FDG Brain PET/CT</h3>
+                    <p>Brain FDG PET imaging for dementia and seizure evaluation</p>
+                    <span class="case-count">5 Cases Available</span>
+                </div>
+
+                <div class="course-card" onclick="showPETCases('amyloid')">
+                    <h3>Amyloid PET/CT</h3>
+                    <p>Amyloid imaging for Alzheimer's disease evaluation</p>
+                    <span class="case-count">4 Cases Available</span>
+                </div>
+            </div>
+
+            <div id="petct-case-viewer" class="case-viewer" style="display: none;">
+                <a href="#" class="back-button" onclick="hidePETCases()">← Back to PET/CT Courses</a>
+                <h3 id="petct-case-title" style="color: var(--primary-green); margin-bottom: 1rem;"></h3>
+                <div id="petct-case-list"></div>
             </div>
         </div>
 
@@ -596,10 +648,14 @@
                 }
             });
             
-            // Hide case viewer when navigating away from courses
+            // Hide case viewers when navigating away from courses
             if (pageName !== 'courses') {
                 document.getElementById('case-viewer').style.display = 'none';
                 document.getElementById('course-grid').style.display = 'grid';
+            }
+            if (pageName !== 'petct-courses') {
+                document.getElementById('petct-case-viewer').style.display = 'none';
+                document.getElementById('petct-course-grid').style.display = 'grid';
             }
         }
 
@@ -607,6 +663,12 @@
         function hideCases() {
             document.getElementById('case-viewer').style.display = 'none';
             document.getElementById('course-grid').style.display = 'grid';
+        }
+
+        // Hide PET/CT cases and show course grid
+        function hidePETCases() {
+            document.getElementById('petct-case-viewer').style.display = 'none';
+            document.getElementById('petct-course-grid').style.display = 'grid';
         }
 
         // Show Cases for Selected Category
@@ -745,6 +807,85 @@
             // Create case links
             caseList.innerHTML = '';
             cases[category].cases.forEach(caseItem => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'case-link';
+                link.textContent = caseItem.name;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    openCaseViewer(caseItem.url, caseItem.name);
+                };
+                caseList.appendChild(link);
+            });
+        }
+
+        // Show PET/CT Cases for Selected Category
+        function showPETCases(category) {
+            const caseViewer = document.getElementById('petct-case-viewer');
+            const caseTitle = document.getElementById('petct-case-title');
+            const caseList = document.getElementById('petct-case-list');
+            const courseGrid = document.getElementById('petct-course-grid');
+
+            // PET/CT case data with placeholder PACSmini URLs
+            const petctCases = {
+                fdgpet: {
+                    title: 'FDG PET/CT Cases',
+                    cases: [
+                        { name: 'Case 1: Lung Cancer Staging', url: 'https://www.pacsbin.com/c/fdgpet1' },
+                        { name: 'Case 2: Lymphoma Follow-up', url: 'https://www.pacsbin.com/c/fdgpet2' },
+                        { name: 'Case 3: Colorectal Cancer Metastases', url: 'https://www.pacsbin.com/c/fdgpet3' },
+                        { name: 'Case 4: Melanoma Evaluation', url: 'https://www.pacsbin.com/c/fdgpet4' },
+                        { name: 'Case 5: Unknown Primary', url: 'https://www.pacsbin.com/c/fdgpet5' }
+                    ]
+                },
+                psma: {
+                    title: 'PSMA PET/CT Cases',
+                    cases: [
+                        { name: 'Case 1: Initial Staging', url: 'https://www.pacsbin.com/c/psma1' },
+                        { name: 'Case 2: Biochemical Recurrence', url: 'https://www.pacsbin.com/c/psma2' },
+                        { name: 'Case 3: Bone Metastases', url: 'https://www.pacsbin.com/c/psma3' },
+                        { name: 'Case 4: Lymph Node Involvement', url: 'https://www.pacsbin.com/c/psma4' }
+                    ]
+                },
+                dotate: {
+                    title: 'DOTATE PET/CT Cases',
+                    cases: [
+                        { name: 'Case 1: Carcinoid Tumor', url: 'https://www.pacsbin.com/c/dotate1' },
+                        { name: 'Case 2: Pancreatic NET', url: 'https://www.pacsbin.com/c/dotate2' },
+                        { name: 'Case 3: Small Bowel NET', url: 'https://www.pacsbin.com/c/dotate3' },
+                        { name: 'Case 4: Pheochromocytoma', url: 'https://www.pacsbin.com/c/dotate4' }
+                    ]
+                },
+                fdgbrain: {
+                    title: 'FDG Brain PET/CT Cases',
+                    cases: [
+                        { name: 'Case 1: Normal Brain Metabolism', url: 'https://www.pacsbin.com/c/fdgbrain1' },
+                        { name: 'Case 2: Alzheimer\'s Disease', url: 'https://www.pacsbin.com/c/fdgbrain2' },
+                        { name: 'Case 3: Seizure Focus Localization', url: 'https://www.pacsbin.com/c/fdgbrain3' },
+                        { name: 'Case 4: Frontotemporal Dementia', url: 'https://www.pacsbin.com/c/fdgbrain4' },
+                        { name: 'Case 5: Brain Tumor Evaluation', url: 'https://www.pacsbin.com/c/fdgbrain5' }
+                    ]
+                },
+                amyloid: {
+                    title: 'Amyloid PET/CT Cases',
+                    cases: [
+                        { name: 'Case 1: Negative Amyloid Scan', url: 'https://www.pacsbin.com/c/amyloid1' },
+                        { name: 'Case 2: Positive Amyloid - Alzheimer\'s', url: 'https://www.pacsbin.com/c/amyloid2' },
+                        { name: 'Case 3: Early Amyloid Deposition', url: 'https://www.pacsbin.com/c/amyloid3' },
+                        { name: 'Case 4: Diffuse Amyloid Burden', url: 'https://www.pacsbin.com/c/amyloid4' }
+                    ]
+                }
+            };
+
+            // Hide course grid and show case viewer
+            courseGrid.style.display = 'none';
+            caseViewer.style.display = 'block';
+
+            caseTitle.textContent = petctCases[category].title;
+
+            // Create case links
+            caseList.innerHTML = '';
+            petctCases[category].cases.forEach(caseItem => {
                 const link = document.createElement('a');
                 link.href = '#';
                 link.className = 'case-link';
