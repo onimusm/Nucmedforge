@@ -552,7 +552,7 @@
 <body>
     <nav>
         <div class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home', event); return false;">
+            <a href="#home" class="logo" onclick="showPage('home', event); return false;">
                 <!-- Modern Anvil Logo -->
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <!-- Flame/Energy burst in background -->
@@ -606,13 +606,13 @@
                 ☰
             </button>
             <ul class="nav-links">
-                <li><a href="#" onclick="showPage('home', event); return false;" class="nav-link active" data-page="home">Home</a></li>
-                <li><a href="#" onclick="showPage('courses', event); return false;" class="nav-link" data-page="courses">General Nucs</a></li>
-                <li><a href="#" onclick="showPage('petct-courses', event); return false;" class="nav-link" data-page="petct-courses">PET/CT</a></li>
-                <li><a href="#" onclick="showPage('cardiac-courses', event); return false;" class="nav-link" data-page="cardiac-courses">Cardiac Nucs</a></li>
-                <li><a href="#" onclick="showPage('resources', event); return false;" class="nav-link" data-page="resources">Resources</a></li>
-                <li><a href="#" onclick="showPage('about', event); return false;" class="nav-link" data-page="about">About</a></li>
-                <li><a href="#" onclick="showPage('contact', event); return false;" class="nav-link" data-page="contact">Contact</a></li>
+                <li><a href="#home" onclick="showPage('home', event); return false;" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#courses" onclick="showPage('courses', event); return false;" class="nav-link" data-page="courses">General Nucs</a></li>
+                <li><a href="#petct-courses" onclick="showPage('petct-courses', event); return false;" class="nav-link" data-page="petct-courses">PET/CT</a></li>
+                <li><a href="#cardiac-courses" onclick="showPage('cardiac-courses', event); return false;" class="nav-link" data-page="cardiac-courses">Cardiac Nucs</a></li>
+                <li><a href="#resources" onclick="showPage('resources', event); return false;" class="nav-link" data-page="resources">Resources</a></li>
+                <li><a href="#about" onclick="showPage('about', event); return false;" class="nav-link" data-page="about">About</a></li>
+                <li><a href="#contact" onclick="showPage('contact', event); return false;" class="nav-link" data-page="contact">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -941,14 +941,20 @@
             if (event) {
                 event.preventDefault();
             }
-            
+
+            // Exit early if the requested page is missing
+            const pageToShow = document.getElementById(pageName);
+            if (!pageToShow) {
+                return;
+            }
+
             // Hide all pages
             const pages = document.querySelectorAll('.page-section');
             pages.forEach(page => page.classList.remove('active'));
-            
+
             // Show selected page
-            document.getElementById(pageName).classList.add('active');
-            
+            pageToShow.classList.add('active');
+
             // Update nav links
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
@@ -957,7 +963,7 @@
                     link.classList.add('active');
                 }
             });
-            
+
             // Hide case viewers when navigating away from courses
             if (pageName !== 'courses') {
                 document.getElementById('case-viewer').style.display = 'none';
@@ -971,7 +977,21 @@
                 document.getElementById('cardiac-case-viewer').style.display = 'none';
                 document.getElementById('cardiac-course-grid').style.display = 'grid';
             }
+
+            // Sync the URL hash so direct links work and refreshes keep the state
+            if (window.location.hash !== `#${pageName}`) {
+                history.replaceState(null, '', `#${pageName}`);
+            }
         }
+
+        // Ensure correct page is shown when loading with a hash or when the hash changes
+        function showPageFromHash() {
+            const hash = window.location.hash.replace('#', '') || 'home';
+            showPage(hash);
+        }
+
+        window.addEventListener('hashchange', showPageFromHash);
+        window.addEventListener('DOMContentLoaded', showPageFromHash);
 
         // Hide cases and show course grid
         function hideCases() {
