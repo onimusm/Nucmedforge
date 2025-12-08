@@ -552,7 +552,7 @@
 <body>
     <nav>
         <div class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home', event)">
+            <a href="#" class="logo" onclick="showPage('home', event); return false;">
                 <!-- Modern Anvil Logo -->
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <!-- Flame/Energy burst in background -->
@@ -606,13 +606,13 @@
                 ☰
             </button>
             <ul class="nav-links">
-                <li><a href="#" onclick="showPage('home', event)" class="nav-link active" data-page="home">Home</a></li>
-                <li><a href="#" onclick="showPage('courses', event)" class="nav-link" data-page="courses">General Nucs</a></li>
-                <li><a href="#" onclick="showPage('petct-courses', event)" class="nav-link" data-page="petct-courses">PET/CT</a></li>
-                <li><a href="#" onclick="showPage('cardiac-courses', event)" class="nav-link" data-page="cardiac-courses">Cardiac Nucs</a></li>
-                <li><a href="#" onclick="showPage('resources', event)" class="nav-link" data-page="resources">Resources</a></li>
-                <li><a href="#" onclick="showPage('about', event)" class="nav-link" data-page="about">About</a></li>
-                <li><a href="#" onclick="showPage('contact', event)" class="nav-link" data-page="contact">Contact</a></li>
+                <li><a href="#" onclick="showPage('home', event); return false;" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#" onclick="showPage('courses', event); return false;" class="nav-link" data-page="courses">General Nucs</a></li>
+                <li><a href="#" onclick="showPage('petct-courses', event); return false;" class="nav-link" data-page="petct-courses">PET/CT</a></li>
+                <li><a href="#" onclick="showPage('cardiac-courses', event); return false;" class="nav-link" data-page="cardiac-courses">Cardiac Nucs</a></li>
+                <li><a href="#" onclick="showPage('resources', event); return false;" class="nav-link" data-page="resources">Resources</a></li>
+                <li><a href="#" onclick="showPage('about', event); return false;" class="nav-link" data-page="about">About</a></li>
+                <li><a href="#" onclick="showPage('contact', event); return false;" class="nav-link" data-page="contact">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -629,15 +629,15 @@
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Start Learning Today</h3>
                 <p style="color: var(--text-muted); margin-bottom: 2rem;">Explore our comprehensive collection of nuclear medicine cases</p>
                 <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn category-btn" onclick="showPage('courses', event)" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
+                    <button class="btn category-btn" onclick="showPage('courses', event); return false;" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
                         General
                     </button>
-                    <button class="btn category-btn" onclick="showPage('petct-courses', event)" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
+                    <button class="btn category-btn" onclick="showPage('petct-courses', event); return false;" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
                         PET/CT
                     </button>
-                    <button class="btn category-btn" onclick="showPage('cardiac-courses', event)" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
+                    <button class="btn category-btn" onclick="showPage('cardiac-courses', event); return false;" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">❤️</div>
                         Cardiac
                     </button>
@@ -730,7 +730,7 @@
             </div>
             
             <div id="case-viewer" class="case-viewer" style="display: none;">
-                <a href="#" class="back-button" onclick="hideCases()">← Back to Courses</a>
+                <a href="#" class="back-button" onclick="hideCases(); return false;">← Back to Courses</a>
                 <h3 id="case-title" style="color: var(--primary-green); margin-bottom: 1rem;"></h3>
                 <div id="case-list"></div>
             </div>
@@ -773,7 +773,7 @@
             </div>
 
             <div id="petct-case-viewer" class="case-viewer" style="display: none;">
-                <a href="#" class="back-button" onclick="hidePETCases()">← Back to PET/CT Courses</a>
+                <a href="#" class="back-button" onclick="hidePETCases(); return false;">← Back to PET/CT Courses</a>
                 <h3 id="petct-case-title" style="color: var(--primary-green); margin-bottom: 1rem;"></h3>
                 <div id="petct-case-list"></div>
             </div>
@@ -816,7 +816,7 @@
             </div>
 
             <div id="cardiac-case-viewer" class="case-viewer" style="display: none;">
-                <a href="#" class="back-button" onclick="hideCardiacCases()">← Back to Cardiac Courses</a>
+                <a href="#" class="back-button" onclick="hideCardiacCases(); return false;">← Back to Cardiac Courses</a>
                 <h3 id="cardiac-case-title" style="color: var(--primary-green); margin-bottom: 1rem;"></h3>
                 <div id="cardiac-case-list"></div>
             </div>
@@ -1061,7 +1061,7 @@
                     cases: [
                         { name: 'Case 1: Normal Brain Perfusion', url: 'https://www.pacsbin.com/c/example32' },
                         { name: 'Case 2: Alzheimer\'s Disease', url: 'https://www.pacsbin.com/c/example33' },
-                        { name: 'Case 3: Seizure Focus', url: 'https://www.pacsbin.com/ c/example34' },
+                        { name: 'Case 3: Seizure Focus', url: 'https://www.pacsbin.com/c/example34' },
                         { name: 'Case 4: Stroke', url: 'https://www.pacsbin.com/c/example35' }
                     ]
                 },
