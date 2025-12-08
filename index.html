@@ -1003,7 +1003,7 @@
                 vq: {
                     title: 'V/Q Scan Cases',
                     cases: [
-                        { name: 'Case 1: Normal V/Q Scan', url: 'https://www.pacsbin.com/c/1JNqVJRyaH' },
+                        { name: 'Case 1: Normal V/Q Scan', url: 'https://www.pacsbin.com/c/Zyd7h_3LE5?s=65ca4c98f798e67b29071703&i=65ca4c98f798e67b2907177c&ww=400&wc=5&an=true' },
                         { name: 'Case 2: High Probability PE', url: 'https://www.pacsbin.com/c/example2' },
                         { name: 'Case 3: Intermediate Probability', url: 'https://www.pacsbin.com/c/example3' },
                         { name: 'Case 4: Low Probability', url: 'https://www.pacsbin.com/c/example4' },
@@ -1311,13 +1311,14 @@
                             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                             background-color: #0a0a0a;
                             color: #ffffff;
+                            overflow: hidden;
                         }
                         .viewer-container {
                             display: grid;
                             grid-template-columns: 1fr 350px;
-                            grid-template-rows: 1fr auto;
+                            grid-template-rows: 1fr 250px;
                             height: 100vh;
-                            gap: 10px;
+                            gap: 0;
                             padding: 10px;
                         }
                         .case-iframe {
@@ -1326,6 +1327,8 @@
                             background-color: #1a1a1a;
                             border-radius: 5px;
                             overflow: hidden;
+                            margin-right: 5px;
+                            margin-bottom: 5px;
                         }
                         .case-iframe iframe {
                             width: 100%;
@@ -1339,6 +1342,8 @@
                             border-radius: 5px;
                             padding: 20px;
                             overflow-y: auto;
+                            position: relative;
+                            margin-left: 5px;
                         }
                         .teaching-points {
                             grid-column: 1;
@@ -1346,7 +1351,36 @@
                             background-color: #1a1a1a;
                             border-radius: 5px;
                             padding: 20px;
-                            min-height: 200px;
+                            overflow-y: auto;
+                            position: relative;
+                            margin-right: 5px;
+                            margin-top: 5px;
+                        }
+                        .resize-handle-vertical {
+                            position: absolute;
+                            left: -5px;
+                            top: 0;
+                            bottom: 0;
+                            width: 10px;
+                            cursor: ew-resize;
+                            background-color: transparent;
+                            z-index: 10;
+                        }
+                        .resize-handle-vertical:hover {
+                            background-color: rgba(34, 139, 34, 0.3);
+                        }
+                        .resize-handle-horizontal {
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            top: -5px;
+                            height: 10px;
+                            cursor: ns-resize;
+                            background-color: transparent;
+                            z-index: 10;
+                        }
+                        .resize-handle-horizontal:hover {
+                            background-color: rgba(34, 139, 34, 0.3);
                         }
                         h2 {
                             color: #228B22;
@@ -1369,33 +1403,91 @@
                             outline: none;
                             border-color: #228B22;
                         }
+                        .resizing {
+                            user-select: none;
+                        }
                     </style>
                 </head>
                 <body>
-                    <div class="viewer-container">
+                    <div class="viewer-container" id="viewerContainer">
                         <div class="case-iframe">
                             <iframe src="${url}"></iframe>
                         </div>
                         <div class="sidebar">
+                            <div class="resize-handle-vertical" id="sidebarHandle"></div>
                             <h2>Case Information</h2>
                             <h3>Clinical History</h3>
                             <div contenteditable="true" class="editable">Enter clinical history here...</div>
-                            
+
                             <h3>Findings</h3>
                             <div contenteditable="true" class="editable">Enter findings here...</div>
-                            
+
                             <h3>Diagnosis</h3>
                             <div contenteditable="true" class="editable">Enter diagnosis here...</div>
                         </div>
                         <div class="teaching-points">
+                            <div class="resize-handle-horizontal" id="teachingHandle"></div>
                             <h2>Teaching Points</h2>
                             <div contenteditable="true" class="editable">Enter teaching points here...</div>
                         </div>
                     </div>
+                    <script>
+                        // Resize sidebar (right column)
+                        const sidebarHandle = document.getElementById('sidebarHandle');
+                        const viewerContainer = document.getElementById('viewerContainer');
+                        let isResizingSidebar = false;
+                        let startX = 0;
+                        let startWidth = 0;
+
+                        sidebarHandle.addEventListener('mousedown', (e) => {
+                            isResizingSidebar = true;
+                            startX = e.clientX;
+                            const sidebar = sidebarHandle.parentElement;
+                            startWidth = sidebar.offsetWidth;
+                            document.body.classList.add('resizing');
+                            e.preventDefault();
+                        });
+
+                        // Resize teaching points (bottom bar)
+                        const teachingHandle = document.getElementById('teachingHandle');
+                        let isResizingTeaching = false;
+                        let startY = 0;
+                        let startHeight = 0;
+
+                        teachingHandle.addEventListener('mousedown', (e) => {
+                            isResizingTeaching = true;
+                            startY = e.clientY;
+                            const teaching = teachingHandle.parentElement;
+                            startHeight = teaching.offsetHeight;
+                            document.body.classList.add('resizing');
+                            e.preventDefault();
+                        });
+
+                        document.addEventListener('mousemove', (e) => {
+                            if (isResizingSidebar) {
+                                const delta = startX - e.clientX;
+                                const newWidth = Math.max(200, Math.min(800, startWidth + delta));
+                                viewerContainer.style.gridTemplateColumns = \`1fr \${newWidth}px\`;
+                            }
+                            if (isResizingTeaching) {
+                                const delta = startY - e.clientY;
+                                const newHeight = Math.max(100, Math.min(600, startHeight + delta));
+                                viewerContainer.style.gridTemplateRows = \`1fr \${newHeight}px\`;
+                            }
+                        });
+
+                        document.addEventListener('mouseup', () => {
+                            if (isResizingSidebar || isResizingTeaching) {
+                                document.body.classList.remove('resizing');
+                            }
+                            isResizingSidebar = false;
+                            isResizingTeaching = false;
+                        });
+                    </script>
                 </body>
                 </html>
             `;
-            
+
             // Open in new tab
             const newTab = window.open('', '_blank');
             newTab.document.write(htmlContent);
