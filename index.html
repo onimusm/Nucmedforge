@@ -28,6 +28,8 @@
             background-color: var(--primary-dark);
             color: var(--text-light);
             line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         /* Navigation */
@@ -94,6 +96,8 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
         .hero {
@@ -629,15 +633,15 @@
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Start Learning Today</h3>
                 <p style="color: var(--text-muted); margin-bottom: 2rem;">Explore our comprehensive collection of nuclear medicine cases</p>
                 <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-                    <button type="button" class="btn category-btn" onclick="showPage('courses', event);" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
+                    <button type="button" class="btn category-btn" onclick="showPage('courses');" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
                         General
                     </button>
-                    <button type="button" class="btn category-btn" onclick="showPage('petct-courses', event);" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
+                    <button type="button" class="btn category-btn" onclick="showPage('petct-courses');" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
                         PET/CT
                     </button>
-                    <button type="button" class="btn category-btn" onclick="showPage('cardiac-courses', event);" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
+                    <button type="button" class="btn category-btn" onclick="showPage('cardiac-courses');" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">❤️</div>
                         Cardiac
                     </button>
