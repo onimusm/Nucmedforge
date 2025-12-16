@@ -123,12 +123,12 @@
 
         /* Page Sections */
         .page-section {
-            display: none;
+            display: none !important;
             animation: fadeIn 0.5s ease-in;
         }
 
         .page-section.active {
-            display: block;
+            display: block !important;
         }
 
         @keyframes fadeIn {
@@ -624,20 +624,20 @@
                 <h2>Welcome to the Forge</h2>
                 <p>Forging excellence in nuclear medicine education through interactive case-based learning</p>
             </div>
-            
+
             <div style="text-align: center; margin-top: 3rem;">
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Start Learning Today</h3>
                 <p style="color: var(--text-muted); margin-bottom: 2rem;">Explore our comprehensive collection of nuclear medicine cases</p>
                 <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-                    <button type="button" class="btn category-btn" onclick="showPage('courses', event); return false;" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
+                    <button type="button" class="btn category-btn" onclick="showPage('courses', event);" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
                         General
                     </button>
-                    <button type="button" class="btn category-btn" onclick="showPage('petct-courses', event); return false;" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
+                    <button type="button" class="btn category-btn" onclick="showPage('petct-courses', event);" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
                         PET/CT
                     </button>
-                    <button type="button" class="btn category-btn" onclick="showPage('cardiac-courses', event); return false;" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
+                    <button type="button" class="btn category-btn" onclick="showPage('cardiac-courses', event);" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">❤️</div>
                         Cardiac
                     </button>
