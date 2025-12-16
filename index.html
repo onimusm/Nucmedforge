@@ -1325,6 +1325,9 @@
                 <html>
                 <head>
                     <title>${caseName} - NucMedForge</title>
+                    <!-- Quill.js for rich text editing -->
+                    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+                    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
                     <style>
                         body {
                             margin: 0;
@@ -1364,6 +1367,8 @@
                             overflow-y: auto;
                             position: relative;
                             margin-left: 5px;
+                            display: flex;
+                            flex-direction: column;
                         }
                         .teaching-points {
                             grid-column: 1;
@@ -1378,33 +1383,60 @@
                         }
                         .resize-handle-vertical {
                             position: absolute;
-                            left: -5px;
+                            left: -10px;
                             top: 0;
                             bottom: 0;
-                            width: 10px;
+                            width: 20px;
                             cursor: ew-resize;
                             background-color: transparent;
                             z-index: 10;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                         }
-                        .resize-handle-vertical:hover {
-                            background-color: rgba(34, 139, 34, 0.3);
+                        .resize-handle-vertical::before {
+                            content: '';
+                            width: 4px;
+                            height: 40px;
+                            background-color: rgba(34, 139, 34, 0.4);
+                            border-radius: 2px;
+                            transition: all 0.2s ease;
+                        }
+                        .resize-handle-vertical:hover::before {
+                            background-color: rgba(34, 139, 34, 0.8);
+                            height: 60px;
+                            width: 6px;
                         }
                         .resize-handle-horizontal {
                             position: absolute;
                             left: 0;
                             right: 0;
-                            top: -5px;
-                            height: 10px;
+                            top: -10px;
+                            height: 20px;
                             cursor: ns-resize;
                             background-color: transparent;
                             z-index: 10;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                         }
-                        .resize-handle-horizontal:hover {
-                            background-color: rgba(34, 139, 34, 0.3);
+                        .resize-handle-horizontal::before {
+                            content: '';
+                            width: 40px;
+                            height: 4px;
+                            background-color: rgba(34, 139, 34, 0.4);
+                            border-radius: 2px;
+                            transition: all 0.2s ease;
+                        }
+                        .resize-handle-horizontal:hover::before {
+                            background-color: rgba(34, 139, 34, 0.8);
+                            width: 60px;
+                            height: 6px;
                         }
                         h2 {
                             color: #228B22;
                             margin-top: 0;
+                            margin-bottom: 15px;
                         }
                         h3 {
                             color: #ff6b35;
@@ -1426,6 +1458,72 @@
                         .resizing {
                             user-select: none;
                         }
+                        /* Quill editor container */
+                        #report-editor {
+                            flex: 1;
+                            display: flex;
+                            flex-direction: column;
+                            background-color: #2a2a2a;
+                            border-radius: 5px;
+                            overflow: hidden;
+                        }
+                        /* Quill toolbar styling */
+                        .ql-toolbar.ql-snow {
+                            background-color: #1a1a1a;
+                            border: 1px solid #333;
+                            border-bottom: 2px solid #228B22;
+                            border-radius: 5px 5px 0 0;
+                        }
+                        .ql-toolbar.ql-snow .ql-stroke {
+                            stroke: #ccc;
+                        }
+                        .ql-toolbar.ql-snow .ql-fill {
+                            fill: #ccc;
+                        }
+                        .ql-toolbar.ql-snow .ql-picker-label {
+                            color: #ccc;
+                        }
+                        .ql-toolbar.ql-snow button:hover,
+                        .ql-toolbar.ql-snow button.ql-active {
+                            background-color: #228B22;
+                        }
+                        .ql-toolbar.ql-snow button:hover .ql-stroke,
+                        .ql-toolbar.ql-snow button.ql-active .ql-stroke {
+                            stroke: #fff;
+                        }
+                        .ql-toolbar.ql-snow button:hover .ql-fill,
+                        .ql-toolbar.ql-snow button.ql-active .ql-fill {
+                            fill: #fff;
+                        }
+                        /* Quill editor content area */
+                        .ql-container.ql-snow {
+                            background-color: #2a2a2a;
+                            border: 1px solid #333;
+                            border-top: none;
+                            border-radius: 0 0 5px 5px;
+                            color: #fff;
+                            font-size: 14px;
+                            flex: 1;
+                        }
+                        .ql-editor {
+                            color: #fff;
+                            min-height: 200px;
+                        }
+                        .ql-editor.ql-blank::before {
+                            color: #999;
+                            font-style: italic;
+                        }
+                        .ql-snow .ql-picker {
+                            color: #ccc;
+                        }
+                        .ql-snow .ql-picker-options {
+                            background-color: #1a1a1a;
+                            border: 1px solid #333;
+                        }
+                        .ql-snow .ql-picker-options .ql-picker-item:hover {
+                            background-color: #228B22;
+                            color: #fff;
+                        }
                     </style>
                 </head>
                 <body>
@@ -1435,15 +1533,8 @@
                         </div>
                         <div class="sidebar">
                             <div class="resize-handle-vertical" id="sidebarHandle"></div>
-                            <h2>Case Information</h2>
-                            <h3>Clinical History</h3>
-                            <div contenteditable="true" class="editable">Enter clinical history here...</div>
-
-                            <h3>Findings</h3>
-                            <div contenteditable="true" class="editable">Enter findings here...</div>
-
-                            <h3>Diagnosis</h3>
-                            <div contenteditable="true" class="editable">Enter diagnosis here...</div>
+                            <h2>Report</h2>
+                            <div id="report-editor"></div>
                         </div>
                         <div class="teaching-points">
                             <div class="resize-handle-horizontal" id="teachingHandle"></div>
@@ -1452,6 +1543,23 @@
                         </div>
                     </div>
                     <script>
+                        // Initialize Quill editor
+                        const quill = new Quill('#report-editor', {
+                            theme: 'snow',
+                            placeholder: 'Enter your case report here...',
+                            modules: {
+                                toolbar: [
+                                    [{ 'header': [1, 2, 3, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                                    [{ 'color': [] }, { 'background': [] }],
+                                    [{ 'align': [] }],
+                                    ['clean']
+                                ]
+                            }
+                        });
+
                         // Resize sidebar (right column)
                         const sidebarHandle = document.getElementById('sidebarHandle');
                         const viewerContainer = document.getElementById('viewerContainer');
