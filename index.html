@@ -555,7 +555,7 @@
 <body>
     <nav>
         <div class="nav-container">
-            <a href="#home" class="logo" onclick="showPage('home', event); return false;">
+            <a href="#home" class="logo" data-page="home">
                 <!-- Modern Anvil Logo -->
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <!-- Flame/Energy burst in background -->
@@ -609,13 +609,13 @@
                 ☰
             </button>
             <ul class="nav-links">
-                <li><a href="#home" onclick="showPage('home', event); return false;" class="nav-link active" data-page="home">Home</a></li>
-                <li><a href="#courses" onclick="showPage('courses', event); return false;" class="nav-link" data-page="courses">General Nucs</a></li>
-                <li><a href="#petct-courses" onclick="showPage('petct-courses', event); return false;" class="nav-link" data-page="petct-courses">PET/CT</a></li>
-                <li><a href="#cardiac-courses" onclick="showPage('cardiac-courses', event); return false;" class="nav-link" data-page="cardiac-courses">Cardiac Nucs</a></li>
-                <li><a href="#resources" onclick="showPage('resources', event); return false;" class="nav-link" data-page="resources">Resources</a></li>
-                <li><a href="#about" onclick="showPage('about', event); return false;" class="nav-link" data-page="about">About</a></li>
-                <li><a href="#contact" onclick="showPage('contact', event); return false;" class="nav-link" data-page="contact">Contact</a></li>
+                <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#courses" class="nav-link" data-page="courses">General Nucs</a></li>
+                <li><a href="#petct-courses" class="nav-link" data-page="petct-courses">PET/CT</a></li>
+                <li><a href="#cardiac-courses" class="nav-link" data-page="cardiac-courses">Cardiac Nucs</a></li>
+                <li><a href="#resources" class="nav-link" data-page="resources">Resources</a></li>
+                <li><a href="#about" class="nav-link" data-page="about">About</a></li>
+                <li><a href="#contact" class="nav-link" data-page="contact">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -632,15 +632,15 @@
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Start Learning Today</h3>
                 <p style="color: var(--text-muted); margin-bottom: 2rem;">Explore our comprehensive collection of nuclear medicine cases</p>
                 <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-                    <button type="button" class="btn category-btn" onclick="showPage('courses');" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
+                    <button type="button" class="btn category-btn" data-page="courses" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #145014 0%, #0f3e0f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
                         General
                     </button>
-                    <button type="button" class="btn category-btn" onclick="showPage('petct-courses');" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
+                    <button type="button" class="btn category-btn" data-page="petct-courses" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #cc5529 0%, #a3431f 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
                         PET/CT
                     </button>
-                    <button type="button" class="btn category-btn" onclick="showPage('cardiac-courses');" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
+                    <button type="button" class="btn category-btn" data-page="cardiac-courses" style="width: 200px; font-size: 1.2rem; background: linear-gradient(135deg, #9a1830 0%, #660000 100%);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">❤️</div>
                         Cardiac
                     </button>
@@ -993,8 +993,23 @@
             showPage(hash);
         }
 
+        function bindPageNavigation() {
+            const pageTriggers = document.querySelectorAll('[data-page]');
+            pageTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (event) => {
+                    const pageName = trigger.getAttribute('data-page');
+                    if (!pageName) {
+                        return;
+                    }
+                    event.preventDefault();
+                    showPage(pageName);
+                });
+            });
+        }
+
         window.addEventListener('hashchange', showPageFromHash);
         window.addEventListener('DOMContentLoaded', showPageFromHash);
+        window.addEventListener('DOMContentLoaded', bindPageNavigation);
 
         // Hide cases and show course grid
         function hideCases() {
