@@ -1036,7 +1036,8 @@
             const caseList = document.getElementById('case-list');
             const courseGrid = document.getElementById('course-grid');
             
-            // Sample case data - replace with actual PACSmini URLs
+            // Sample case data - replace with actual PACSmini URLs.
+            // Optional fields: report, teachingPoints (HTML strings shown in the case viewer).
             const cases = {
                 vq: {
                     title: 'V/Q Scan Cases',
@@ -1171,7 +1172,7 @@
                 link.textContent = caseItem.name;
                 link.onclick = (e) => {
                     e.preventDefault();
-                    openCaseViewer(caseItem.url, caseItem.name);
+                    openCaseViewer(caseItem.url, caseItem.name, caseItem.report, caseItem.teachingPoints);
                 };
                 caseList.appendChild(link);
             });
@@ -1184,7 +1185,8 @@
             const caseList = document.getElementById('petct-case-list');
             const courseGrid = document.getElementById('petct-course-grid');
 
-            // PET/CT case data with placeholder PACSmini URLs
+            // PET/CT case data with placeholder PACSmini URLs.
+            // Optional fields: report, teachingPoints (HTML strings shown in the case viewer).
             const petctCases = {
                 fdgpet: {
                     title: 'FDG PET/CT Cases',
@@ -1250,7 +1252,7 @@
                 link.textContent = caseItem.name;
                 link.onclick = (e) => {
                     e.preventDefault();
-                    openCaseViewer(caseItem.url, caseItem.name);
+                    openCaseViewer(caseItem.url, caseItem.name, caseItem.report, caseItem.teachingPoints);
                 };
                 caseList.appendChild(link);
             });
@@ -1263,7 +1265,8 @@
             const caseList = document.getElementById('cardiac-case-list');
             const courseGrid = document.getElementById('cardiac-course-grid');
 
-            // Cardiac case data with placeholder PACSmini URLs
+            // Cardiac case data with placeholder PACSmini URLs.
+            // Optional fields: report, teachingPoints (HTML strings shown in the case viewer).
             const cardiacCases = {
                 'mpi-spect': {
                     title: 'Myocardial Perfusion SPECT Cases',
@@ -1329,23 +1332,22 @@
                 link.textContent = caseItem.name;
                 link.onclick = (e) => {
                     e.preventDefault();
-                    openCaseViewer(caseItem.url, caseItem.name);
+                    openCaseViewer(caseItem.url, caseItem.name, caseItem.report, caseItem.teachingPoints);
                 };
                 caseList.appendChild(link);
             });
         }
 
         // Open Case Viewer in New Tab
-        function openCaseViewer(url, caseName) {
+        function openCaseViewer(url, caseName, reportHtml, teachingPointsHtml) {
             // Create HTML content for the new tab
+            const reportContent = reportHtml ?? 'Enter your case report here...';
+            const teachingPointsContent = teachingPointsHtml ?? 'Enter teaching points here...';
             const htmlContent = `
                 <!DOCTYPE html>
                 <html>
                 <head>
                     <title>${caseName} - NucMedForge</title>
-                    <!-- Quill.js for rich text editing -->
-                    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-                    <script src="https://cdn.quilljs.com/1.3.6/quill.js"><\/script>
                     <style>
                         body {
                             margin: 0;
@@ -1460,7 +1462,7 @@
                             color: #ff6b35;
                             margin-top: 20px;
                         }
-                        .editable {
+                        .static-content {
                             background-color: #2a2a2a;
                             border: 1px solid #333;
                             border-radius: 5px;
@@ -1469,78 +1471,8 @@
                             min-height: 100px;
                             white-space: pre-wrap;
                         }
-                        .editable:focus {
-                            outline: none;
-                            border-color: #228B22;
-                        }
                         .resizing {
                             user-select: none;
-                        }
-                        /* Quill editor container */
-                        #report-editor {
-                            flex: 1;
-                            display: flex;
-                            flex-direction: column;
-                            background-color: #2a2a2a;
-                            border-radius: 5px;
-                            overflow: hidden;
-                        }
-                        /* Quill toolbar styling */
-                        .ql-toolbar.ql-snow {
-                            background-color: #1a1a1a;
-                            border: 1px solid #333;
-                            border-bottom: 2px solid #228B22;
-                            border-radius: 5px 5px 0 0;
-                        }
-                        .ql-toolbar.ql-snow .ql-stroke {
-                            stroke: #ccc;
-                        }
-                        .ql-toolbar.ql-snow .ql-fill {
-                            fill: #ccc;
-                        }
-                        .ql-toolbar.ql-snow .ql-picker-label {
-                            color: #ccc;
-                        }
-                        .ql-toolbar.ql-snow button:hover,
-                        .ql-toolbar.ql-snow button.ql-active {
-                            background-color: #228B22;
-                        }
-                        .ql-toolbar.ql-snow button:hover .ql-stroke,
-                        .ql-toolbar.ql-snow button.ql-active .ql-stroke {
-                            stroke: #fff;
-                        }
-                        .ql-toolbar.ql-snow button:hover .ql-fill,
-                        .ql-toolbar.ql-snow button.ql-active .ql-fill {
-                            fill: #fff;
-                        }
-                        /* Quill editor content area */
-                        .ql-container.ql-snow {
-                            background-color: #2a2a2a;
-                            border: 1px solid #333;
-                            border-top: none;
-                            border-radius: 0 0 5px 5px;
-                            color: #fff;
-                            font-size: 14px;
-                            flex: 1;
-                        }
-                        .ql-editor {
-                            color: #fff;
-                            min-height: 200px;
-                        }
-                        .ql-editor.ql-blank::before {
-                            color: #999;
-                            font-style: italic;
-                        }
-                        .ql-snow .ql-picker {
-                            color: #ccc;
-                        }
-                        .ql-snow .ql-picker-options {
-                            background-color: #1a1a1a;
-                            border: 1px solid #333;
-                        }
-                        .ql-snow .ql-picker-options .ql-picker-item:hover {
-                            background-color: #228B22;
-                            color: #fff;
                         }
                     </style>
                 </head>
@@ -1552,32 +1484,15 @@
                         <div class="sidebar">
                             <div class="resize-handle-vertical" id="sidebarHandle"></div>
                             <h2>Report</h2>
-                            <div id="report-editor"></div>
+                            <div id="report-content" class="static-content">${reportContent}</div>
                         </div>
                         <div class="teaching-points">
                             <div class="resize-handle-horizontal" id="teachingHandle"></div>
                             <h2>Teaching Points</h2>
-                            <div contenteditable="true" class="editable">Enter teaching points here...</div>
+                            <div class="static-content">${teachingPointsContent}</div>
                         </div>
                     </div>
                     <script>
-                        // Initialize Quill editor
-                        const quill = new Quill('#report-editor', {
-                            theme: 'snow',
-                            placeholder: 'Enter your case report here...',
-                            modules: {
-                                toolbar: [
-                                    [{ 'header': [1, 2, 3, false] }],
-                                    ['bold', 'italic', 'underline', 'strike'],
-                                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                    [{ 'indent': '-1'}, { 'indent': '+1' }],
-                                    [{ 'color': [] }, { 'background': [] }],
-                                    [{ 'align': [] }],
-                                    ['clean']
-                                ]
-                            }
-                        });
-
                         // Resize sidebar (right column)
                         const sidebarHandle = document.getElementById('sidebarHandle');
                         const viewerContainer = document.getElementById('viewerContainer');
